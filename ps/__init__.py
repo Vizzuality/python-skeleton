@@ -1,17 +1,13 @@
 """The API MODULE"""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import os
 import json
 import logging
 
-
 from flask import Flask
 from ps.config import SETTINGS
-from ps.routes.api.v1 import endpoints, error
+from ps.routes.api import error
+from ps.routes.api.v1 import psone_endpoints, pstwo_endpoints
 from ps.utils.files import load_config_json
 import CTRegisterMicroserviceFlask
 
@@ -25,7 +21,8 @@ logging.basicConfig(
 app = Flask(__name__)
 
 # Routing
-app.register_blueprint(endpoints, url_prefix='/api/v1/ps')
+app.register_blueprint(psone_endpoints, url_prefix='/api/v1/psone')
+app.register_blueprint(pstwo_endpoints, url_prefix='/api/v1/pstwo')
 
 # CT
 info = load_config_json('register')
