@@ -7,6 +7,8 @@ from ps.routes.api import error
 from ps.validators import validate_greeting
 from ps.middleware import set_something
 from ps.serializers import serialize_greeting
+import json
+import CTRegisterMicroserviceFlask
 
 psone_endpoints = Blueprint('psone_endpoints', __name__)
 
@@ -17,11 +19,18 @@ psone_endpoints = Blueprint('psone_endpoints', __name__)
 def say_hello(something):
     """World Endpoint"""
     logging.info('[ROUTER]: Say Hello')
+    config = {
+        'uri': '/dataset',
+        'method': 'GET',
+    }
+    response = CTRegisterMicroserviceFlask.request_to_microservice(config)
+    elements = response.get('data', None) or 1
     data = {
         'word': 'hello',
         'propertyTwo': 'random',
-        'propertyThree': 'value',
-        'something': something
+        'propertyThree': elements,
+        'something': something,
+        'elements': 1
     }
     if False:
         return error(status=400, detail='Not valid')
